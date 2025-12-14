@@ -1,174 +1,107 @@
-```md
 # sql-analytics-portfolio
 
-## Creating a New Database
+## Overview
 
-## Description
+This repository contains a reproducible SQL analytics environment built with PostgreSQL and Docker.
+It is designed for practicing database schema design, data loading from CSV files, and analytical querying in a clean, production-like setup.
 
-This document outlines the process of setting up a PostgreSQL database environment from scratch.
-It covers repository initialization, containerized database deployment, schema definition,
-data ingestion from CSV files, and database access through pgAdmin.
-The environment is fully reproducible and managed using Docker Compose.
+The project focuses on **structure, reproducibility, and clarity**, rather than manual setup steps.
 
 ---
 
-## 1. Repository Initialization
+## Technologies Used
 
-A new GitHub repository named `sql-analytics-portfolio` was created.
-The repository includes a README file and a `.gitignore` file.
-
-The repository was cloned locally and opened in Visual Studio Code for development.
-
----
-
-## 2. Project Setup
-
-A project directory was created locally and opened in Visual Studio Code.
-All files related to database configuration, data storage, and initialization scripts
-are maintained within this repository.
+* PostgreSQL
+* Docker & Docker Compose
+* pgAdmin
+* SQL
+* CSV datasets
 
 ---
 
-## 3. Dataset Preparation
+## Project Structure
 
-A folder named `data` was created to store the source datasets.
-The following CSV files were added:
+The repository is organized to separate configuration, data, and initialization logic:
 
-- `customers.csv`
-- `employees.csv`
-- `orders.csv`
-- `products.csv`
-- `sales.csv`
-
-These files are used to populate the database during initialization.
+* `data/` — raw CSV datasets
+* `init/` — SQL scripts for schema creation and data loading
+* `docker-compose.yaml` — service orchestration
+* `.env` — environment configuration
 
 ---
 
-## 4. Database Schema Definition
+## Database Design
 
-Database tables and relationships are defined in an SQL initialization script.
+The database schema represents a simple business domain and includes the following entities:
 
-File location:
-```
+* employees
+* customers
+* products
+* orders
+* sales
 
-init/01_schema.sql
+Relationships, primary keys, foreign keys, and indexes are defined to ensure data integrity and support analytical queries.
 
-```
-
-The schema includes the following tables:
-
-- employees
-- customers
-- products
-- orders
-- sales
-
-Primary keys, foreign keys, and indexes are defined to ensure data integrity
-and improve query performance.
+The schema definition is handled entirely through SQL initialization scripts.
 
 ---
 
-## 5. Data Loading (ETL Process)
+## Data Loading
 
-A second SQL initialization script is responsible for loading data from CSV files
-into the database tables using PostgreSQL `COPY` commands.
+CSV datasets are loaded automatically into PostgreSQL during container initialization.
+This simulates a basic ETL process using native PostgreSQL capabilities.
 
-File location:
-```
-
-init/02_etl.sql
-
-```
-
-Data is inserted automatically when the database container is created for the first time.
+No manual data import is required.
 
 ---
 
-## 6. Environment Configuration
+## Running the Environment
 
-Database credentials and configuration parameters are stored in a `.env` file
-located at the root of the project.
-
-The file defines:
-- database port
-- database name
-- user credentials
-- pgAdmin login information
-
----
-
-## 7. Docker Configuration
-
-Docker Compose is used to manage the database environment.
-
-The configuration includes:
-- a PostgreSQL service
-- a pgAdmin service
-- persistent volumes for database data
-- mounted initialization scripts and datasets
-
-File location:
-```
-
-docker-compose.yaml
-
-````
-
----
-
-## 8. Running the Database
-
-The database environment is started using Docker Compose:
+To start the PostgreSQL and pgAdmin services:
 
 ```bash
 docker compose up
-````
+```
 
-Docker automatically executes the initialization scripts and loads the data.
+Docker automatically initializes the database, applies the schema, and loads the data.
 
 ---
 
-## 9. Database Access
+## Database Access
 
-pgAdmin is available through a web browser.
+pgAdmin is available via browser and can be used to explore the database, run queries, and inspect schemas.
 
 ```
 http://localhost:5050
 ```
 
-The PostgreSQL server is registered in pgAdmin using the service name defined in
-the Docker Compose configuration.
+Connection details are defined in the environment configuration file.
 
 ---
 
-## 10. Data Verification
+## Data Validation
 
-After initialization, the data can be verified by executing sample queries:
+Sample queries can be executed to confirm that tables are populated correctly:
 
 ```sql
-SELECT * FROM public.customers LIMIT 10;
-SELECT * FROM public.employees LIMIT 10;
-SELECT * FROM public.orders LIMIT 10;
-SELECT * FROM public.products LIMIT 10;
-SELECT * FROM public.sales LIMIT 10;
+SELECT * FROM customers LIMIT 10;
+SELECT * FROM employees LIMIT 10;
+SELECT * FROM orders LIMIT 10;
+SELECT * FROM products LIMIT 10;
+SELECT * FROM sales LIMIT 10;
 ```
 
 ---
 
-## 11. Stopping the Environment
+## Stopping the Environment
 
-To stop and remove the running containers:
+To stop the running containers:
 
 ```bash
 docker compose down
 ```
 
----
-
-## 12. Reinitialization Notes
-
-If changes are made to the Docker configuration, the environment must be reset
-by removing existing volumes and restarting the containers.
+To fully reset the environment (including database volumes):
 
 ```bash
 docker compose down -v
@@ -177,21 +110,12 @@ docker compose up --build
 
 ---
 
-## Project Structure
+## Purpose
 
-```
-.
-├── README.md
-├── .gitignore
-├── .env
-├── docker-compose.yaml
-├── data/
-│   ├── customers.csv
-│   ├── employees.csv
-│   ├── orders.csv
-│   ├── products.csv
-│   ├── sales.csv
-├── init/
-│   ├── 01_schema.sql
-│   ├── 02_etl.sql
-```
+This project is intended for:
+
+* SQL analytics practice
+* Portfolio demonstration
+* Learning Dockerized database workflows
+* Writing and testing analytical SQL queries
+* Understanding schema-driven data loading
