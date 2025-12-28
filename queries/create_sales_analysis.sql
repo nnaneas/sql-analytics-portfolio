@@ -203,3 +203,5 @@ SELECT
     END AS pricing_type
 FROM sales_analysis
 GROUP BY pricing_type;
+-- Եթե SELECT–ում կա ագրեգատ ֆունկցիա (SUM, COUNT, AVG …), ապա`
+-- Մնացած բոլոր սյուները պետք է լինեն կամ GROUP BY–ի մեջ կամ նույնպես ագրեգատ ֆունկցիայի մեջ
