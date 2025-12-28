@@ -1,3 +1,4 @@
+-- PART 1
 -- task1 & task2
 -- Employee phone numbers must be mandatory
 ALTER TABLE employees
