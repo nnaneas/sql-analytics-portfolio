@@ -205,3 +205,57 @@ FROM sales_analysis
 GROUP BY pricing_type;
 -- Եթե SELECT–ում կա ագրեգատ ֆունկցիա (SUM, COUNT, AVG …), ապա`
 -- Մնացած բոլոր սյուները պետք է լինեն կամ GROUP BY–ի մեջ կամ նույնպես ագրեգատ ֆունկցիայի մեջ
+-- Առաջին SELECT-ում GROUP BY չի օգտագործվում, որովհետև այնտեղ aggregate ֆունկցիա չկա
+-- GROUP BY-ը սահմանում է խմբերը, իսկ SUM()-ը հաշվարկվում է արդեն ստեղծված խմբերի վրա, այդ պատճառով aggregate ֆունկցիաները չեն կարող օգտագործվել GROUP BY-ում։
+
+SELECT 
+	transaction_id,
+	transaction_id % 2 as check,
+	transaction_id/2 as divison
+FROM sales_analysis
+WHERE transaction_id % 2=0
+ORDER BY transaction_id ASC;
+
+SELECT * FROM sales_analysis;
+
+SELECT 
+	transaction_id,
+	customer_name,
+	city,
+	year
+INTO temp
+FROM sales_analysis
+WHERE year BETWEEN 2021 AND 2022;
+
+SELECT * FROM temp;
+-- Ինդեքսներն արդի են միայն այն table-ում, որի համար ստեղծվել են
+
+SELECT DISTINCT customer_name
+FROM sales_analysis;
+
+SELECT 
+	customer_name,
+	SUM(total_sales) AS  customer_sales
+FROM sales_analysis
+GROUP BY customer_name
+ORDER BY SUM(total_sales) DESC
+LIMIT 10;
+
+SELECT 
+	customer_name,
+	transaction_id,
+	CASE 
+		WHEN customer_name IN ('Laura Brown',
+								'Michael Smith',
+								'Kurt Hayes'
+								'Justin Clark'
+								'David Lopez'
+								'Cathy Mckenzie'
+								'Paul Smith'
+								'James Moore'
+								'Danielle Carter'
+								'Julie Clark') THEN 'TOP 10'
+		ELSE 'NOT TOP 10'
+	END AS result
+FROM sales_analysis
+LIMIT 100;
