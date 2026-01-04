@@ -216,8 +216,6 @@ FROM sales_analysis
 WHERE transaction_id % 2=0
 ORDER BY transaction_id ASC;
 
-SELECT * FROM sales_analysis;
-
 SELECT 
 	transaction_id,
 	customer_name,
