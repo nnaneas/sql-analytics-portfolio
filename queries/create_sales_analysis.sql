@@ -257,3 +257,100 @@ SELECT
 	END AS result
 FROM sales_analysis
 LIMIT 100;
+
+-- ցույց ա տալիս unique customer-ների քանակը
+SELECT COUNT(DISTINCT customer_name) AS unique_customer
+FROM sales_analysis;
+
+-- ցույց ա տալիս, թե ամեն product-ից որքան ա գնվել
+SELECT product_name,
+	COUNT(customer_name) AS count_prod
+FROM sales_analysis
+GROUP BY product_name;
+
+-- ցույց ա տալիս mode-ը կամ ամենքիչ կրկնվողը
+SELECT
+	MAX(product_name) AS maxx,
+	MIN(product_name) AS minn
+FROM sales_analysis;
+
+-- ցույց ա տալիս duplicates
+SELECT 
+	transaction_id,
+	COUNT(*) AS duplicates
+FROM sales_analysis
+GROUP BY transaction_id
+HAVING COUNT(*) > 1;
+
+SELECT 
+	month
+	COUNT(*) AS duplicates
+FROM sales_analysis
+GROUP BY month
+HAVING COUNT(*) > 1;
+
+
+
+SELECT 
+	product_name,
+	price * quantity AS total_revenue
+FROM sales_analysis
+GROUP BY 
+	product_name,
+	price * quantity;
+
+SELECT 
+	product_name,
+	ROUND(price * quantity) AS total_revenue
+FROM sales_analysis;
+
+SELECT 
+	product_name,
+	ROUND(price * quantity, 1) AS total_revenue
+FROM sales_analysis;
+
+SELECT 
+	transaction_id,
+	CEILING(total_sales) as rounded_up,
+	FLOOR(total_sales) as rounded_down
+FROM sales_analysis;
+
+SELECT
+  COUNT(transaction_id) AS transactions,
+  SUM(total_sales) AS total_revenue,
+  CEILING(total_sales / 50.0) * 50 AS revenue_range
+FROM sales_analysis
+GROUP BY 
+	CEILING(total_sales / 50.0) * 50
+ORDER BY revenue_range;
+
+-- NULL-ին վերագրեցինք 0
+SELECT
+	AVG(COALESCE(discount, 0)) AS avg_discount_with_zero
+FROM sales_analysis;
+
+SELECT
+	ROUND(AVG(COALESCE(discount, 0)), 2) AS avg_discount_with_zero
+FROM sales_analysis;
+
+
+UPDATE sales_analysis
+SET discount = NULL
+WHERE transaction_id <> 0 AND transaction_id % 2 = 0;
+
+SELECT 
+	* 
+FROM sales_analysis
+WHERE transaction_id <> 0 AND transaction_id % 2 = 0;
+
+SELECT 
+	AVG(discount) AS avg_discount,
+	AVG(COALESCE(discount, 0)) AS avg_discount_with_null
+FROM sales_analysis;
+
+UPDATE sales_analysis
+SET discount = (
+	SELECT AVG(discount)
+	FROM sales_analysis
+)
+WHERE discount IS NULL;
