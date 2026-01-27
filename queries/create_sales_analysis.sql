@@ -594,3 +594,116 @@ SELECT
 FROM transactions_text_demo
 GROUP BY category_raw
 ORDER BY COUNT(category_raw) DESC;
+
+SELECT 
+	order_date,
+	EXTRACT(YEAR FROM order_date) AS year,
+	EXTRACT(MONTH FROM order_date) AS month,
+	EXTRACT(DAY FROM order_date) AS day,
+	EXTRACT(DOW FROM order_date) AS weekday,
+	EXTRACT(EPOCH FROM order_date) AS seconds
+FROM sales_analysis;
+-- or
+SELECT 
+	order_date,
+	DATE_PART('year', order_date) AS year,
+	DATE_PART('month', order_date) AS month,
+	DATE_PART('day', order_date) AS day,
+	DATE_PART('dow', order_date) AS weekday
+FROM sales_analysis;
+
+SELECT 
+	order_date,
+	DATE_TRUNC('year', order_date) AS year,
+	DATE_TRUNC('month', order_date) AS month,
+	DATE_TRUNC('quarter', order_date) AS quarter
+FROM sales_analysis;
+
+SELECT NOW();
+-- OR
+SELECT CURRENT_DATE;
+
+SELECT 
+	DATE(order_date),
+	CURRENT_DATE - DATE(order_date) AS difference
+FROM sales_analysis;
+
+SELECT 
+	order_date,
+	order_date + INTERVAL '1 year'
+FROM sales_analysis;
+
+SELECT 
+	order_date,
+	AGE(CURRENT_DATE, DATE(order_date)) AS interval,
+	AGE(CURRENT_DATE, order_date) AS interval_with_time_zone
+FROM sales_analysis;
+
+
+-- aggregate total sales by month
+SELECT SUM(total_sales) AS summary,
+EXTRACT(MONTH FROM order_date_date) AS month
+FROM sales_analysis
+GROUP BY EXTRACT(MONTH FROM order_date_date)
+ORDER BY summary DESC;
+
+-- aggregate total sales by quarter
+SELECT SUM(total_sales) AS summary,
+EXTRACT(QUARTER FROM order_date_date) AS quarter
+FROM sales_analysis
+GROUP BY EXTRACT(QUARTER FROM order_date_date)
+ORDER BY summary DESC;
+
+-- identify the top 3 months by revenue
+SELECT SUM(total_sales) AS summary,
+EXTRACT(MONTH FROM order_date_date) AS month
+FROM sales_analysis
+GROUP BY EXTRACT(MONTH FROM order_date_date)
+ORDER BY summary DESC
+LIMIT 3;
+
+SELECT SUM(total_sales) AS summary,
+EXTRACT(MONTH FROM order_date_date) AS month
+FROM sales_analysis
+GROUP BY EXTRACT(MONTH FROM order_date_date)
+ORDER BY summary DESC
+LIMIT 3;
+
+-- identify the top quarter by revenue
+SELECT SUM(total_sales) AS summary,
+EXTRACT(QUARTER FROM order_date_date) AS quarter
+FROM sales_analysis
+GROUP BY EXTRACT(QUARTER FROM order_date_date)
+ORDER BY summary DESC
+LIMIT 1;
+
+-- compute days since each transaction
+SELECT 
+	transaction_id,
+	CURRENT_DATE - order_date_date + 'days' AS days
+FROM sales_analysis;
+
+-- transactions from the last 60 days (you should get the empty table)
+SELECT 
+	transaction_id,
+	order_date
+FROM sales_analysis
+WHERE (CURRENT_DATE - order_date_date) <= 60;
+
+-- compute days since last transaction per customer
+SELECT 
+	customer_name,
+	CURRENT_DATE - order_date_date AS days_since_trans
+FROM sales_analysis
+GROUP BY 
+	customer_name,
+	days_since_trans;
+	
+-- use AGE() to describe customer recency in calendar terms
+SELECT 
+	customer_name,
+	AGE(CURRENT_DATE, order_date_date) AS days_since_trans
+FROM sales_analysis
+GROUP BY 
+	customer_name,
+	days_since_trans;
