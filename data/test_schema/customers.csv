@@ -1,0 +1,6 @@
+﻿customer_id;first_name;last_name;customer_name;customer_email;customer_age;city_id
+1;Anna;Petrosyan;Anna Petrosyan;anna.p@gmail.com;28;3
+2;Arman;Hakobyan;Arman Hakobyan;arman.h@gmail.com;35;2
+3;Giorgi;Lomidze;Giorgi Lomidze;giorgi.l@gmail.com;31;5
+4;Mariam;Sargsyan;Mariam Sargsyan;mariam.s@gmail.com;42;1
+5;Nino;Beridze;Nino Beridze;nino.b@gmail.com;27;4
