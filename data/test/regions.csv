@@ -1,6 +1,6 @@
-﻿region_id;region;country_id
-1;Lori;1
-2;Shirak;1
-3;Yerevan;1
-4;Adjara;2
-5;Tbilisi;2
+﻿region_id,region,country_id
+1,Lori,1
+2,Shirak,1
+3,Yerevan,1
+4,Adjara,2
+5,Tbilisi,2
