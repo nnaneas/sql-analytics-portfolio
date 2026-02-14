@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS test;
-
 CREATE TABLE test.category (
   category_id INT PRIMARY KEY,
   product_category TEXT NOT NULL
