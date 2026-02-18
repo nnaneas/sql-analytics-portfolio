@@ -1,6 +1,10 @@
-country_code,country_name
-US,United States
-CA,Canada
-GB,United Kingdom
-FR,France
-DE,Germany
+country_id,country
+1,Australia
+2,Brazil
+3,Canada
+4,Germany
+5,India
+6,Japan
+7,Singapore
+8,UK
+9,USA
