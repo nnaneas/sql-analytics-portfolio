@@ -1,0 +1,66 @@
+SELECT 
+	'countries' AS table, 
+	COUNT(*) 
+FROM project.countries
+UNION ALL 
+	SELECT 
+	'neighbourhood_groups', 
+	COUNT(*) 
+FROM project.neighbourhood_groups
+UNION ALL 
+SELECT 
+	'neighbourhoods', 
+	COUNT(*) 
+FROM project.neighbourhoods
+UNION ALL 
+SELECT 
+	'hosts', 
+	COUNT(*) 
+FROM project.hosts
+UNION ALL 
+SELECT 
+	'room_types', 
+	COUNT(*) 
+FROM project.room_types
+UNION ALL 
+SELECT 
+	'cancellation_policies', 
+	COUNT(*) 
+FROM project.cancellation_policies
+UNION ALL 
+SELECT 
+	'listings', 
+	COUNT(*) 
+FROM project.listings
+UNION ALL 
+SELECT 
+	'listing_review_summary', 
+	COUNT(*) 
+FROM project.listing_review_summary;
+
+
+SELECT 
+	COUNT(*) AS quantity
+FROM project.listings l
+LEFT JOIN project.hosts h ON h.host_id = l.host_id
+WHERE h.host_id IS NULL;
+
+SELECT 
+COUNT(*) AS quantity
+FROM project.listings l
+LEFT JOIN project.neighbourhoods n ON n.neighbourhood_id = l.neighbourhood_id
+WHERE l.neighbourhood_id IS NOT NULL
+  AND n.neighbourhood_id IS NULL;
+
+SELECT 
+	COUNT(*) AS quantity
+FROM project.listings l
+LEFT JOIN project.countries c ON c.country_code = l.country_code
+WHERE l.country_code IS NOT NULL
+  AND c.country_code IS NULL;
+
+SELECT 	
+	COUNT(*) AS invalid_geom
+FROM project.listings
+WHERE geom IS NOT NULL
+  AND NOT ST_IsValid(geom);

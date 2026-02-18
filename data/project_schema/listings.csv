@@ -1,0 +1,6 @@
+listing_id,listing_name,host_id,neighbourhood_id,country_code,latitude,longitude,instant_bookable,construction_year,room_type_id,cancellation_policy_id,price,service_fee,minimum_nights,availability_365,house_rules,license
+1001,Cozy Studio in Manhattan,101,1,US,40.7736,-73.9566,True,2010,1,1,150.0,20.0,2,200,No smoking,LIC1001
+1002,Modern Loft in Brooklyn,102,4,US,40.7081,-73.9571,True,2015,1,2,220.0,30.0,3,150,No pets,LIC1002
+1003,Quiet Room in Queens,103,6,US,40.7612,-73.8303,False,2008,2,1,80.0,10.0,1,300,Quiet hours after 10pm,LIC1003
+1004,Family Home in Bronx,104,7,US,40.8198,-73.9165,True,2000,1,3,130.0,18.0,2,180,No parties,LIC1004
+1005,Waterfront Apartment,105,8,US,40.6437,-74.0736,False,2018,1,2,200.0,25.0,3,220,No loud music,LIC1005

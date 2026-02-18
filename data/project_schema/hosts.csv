@@ -1,0 +1,6 @@
+host_id,host_name,identity_verified_status,calculated_listings_count
+101,Alice Smith,verified,2
+102,Bob Johnson,verified,1
+103,Carol Lee,unconfirmed,1
+104,David Kim,verified,1
+105,Emma Brown,unconfirmed,1
