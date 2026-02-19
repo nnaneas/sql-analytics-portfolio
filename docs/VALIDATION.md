@@ -1,58 +1,8 @@
-```markdown
-# Database Referential Integrity Checks
+# Database Schema Analysis Report
 
-## Purpose
-These SQL queries check for referential integrity issues in the `project` schema and invalid geometries in the `countries` table. [code_file:1]
+Copy the content below into a file named `database_analysis.md` for a complete Markdown report of your SQL queries.
 
-## Referential Integrity Checks (Jobs Table) [code_file:1]
-
-### Orphaned Role, Industry, Country, and Year IDs [code_file:1]
-```sql
--- referential integrity
-SELECT 
-	j.job_id, 
-	j.role_id
-FROM project.jobs j
-LEFT JOIN project.roles r ON j.role_id = r.role_id
-WHERE r.role_id IS NULL;
-
-SELECT 
-	j.job_id, 
-	j.industry_id
-FROM project.jobs j
-LEFT JOIN project.industries i ON j.industry_id = i.industry_id
-WHERE i.industry_id IS NULL;
-
-SELECT 
-	j.job_id, 
-	j.country_id
-FROM project.jobs j
-LEFT JOIN project.countries c ON j.country_id = c.country_id
-WHERE c.country_id IS NULL;
-
-SELECT 
-	j.job_id, 
-	j.year_id
-FROM project.jobs j
-LEFT JOIN project.years y ON j.year_id = y.year_id
-WHERE y.year_id IS NULL;
-```
-These LEFT JOINs identify `job_id`s referencing non-existent IDs in lookup tables. [code_file:1]
-
-### Invalid or NULL Geometries [code_file:1]
-```sql
--- invalid or NULL geometries
-SELECT 
-	country_id, 
-	country, 
-	ST_IsValid(geom) AS is_valid
-FROM project.countries
-WHERE geom IS NULL;
-```
-This flags countries with missing `geom` (PostGIS geometry); extend the WHERE clause to `NOT ST_IsValid(geom)` for invalid ones. [code_file:1]
-
-## Table Row Counts [code_file:1]
-Query to get total row counts across key tables in the `project` schema. [code_file:1]
+## Table Row Counts
 
 ```sql
 -- Row counts for each table
@@ -82,5 +32,74 @@ SELECT
 FROM project.jobs
 ORDER BY table_name;
 ```
-Use this UNION ALL query for a quick overview of table sizes, ordered alphabetically. [code_file:1]
+This query provides a summary of total rows across all core tables in the project schema, ordered alphabetically.
+
+## Referential Integrity Checks
+
+### Roles Check
+```sql
+SELECT 
+	j.job_id, 
+	j.role_id
+FROM project.jobs j
+LEFT JOIN project.roles r ON j.role_id = r.role_id
+WHERE r.role_id IS NULL;
+```
+Identifies jobs referencing non-existent roles, revealing potential orphaned records.
+
+### Industries Check
+```sql
+SELECT 
+	j.job_id, 
+	j.industry_id
+FROM project.jobs j
+LEFT JOIN project.industries i ON j.industry_id = i.industry_id
+WHERE i.industry_id IS NULL;
+```
+Flags jobs with invalid industry foreign keys for data cleanup.
+
+### Countries Check
+```sql
+SELECT 
+	j.job_id, 
+	j.country_id
+FROM project.jobs j
+LEFT JOIN project.countries c ON j.country_id = c.country_id
+WHERE c.country_id IS NULL;
+```
+Detects invalid country references in the jobs table.
+
+### Years Check
+```sql
+SELECT 
+	j.job_id, 
+	j.year_id
+FROM project.jobs j
+LEFT JOIN project.years y ON j.year_id = y.year_id
+WHERE y.year_id IS NULL;
+```
+Checks for jobs linked to missing year records.
+
+## Geometry Validation
+
+```sql
+-- NULL geometries check
+SELECT 
+	country_id, 
+	country, 
+	ST_IsValid(geom) AS is_valid
+FROM project.countries
+WHERE geom IS NULL;
+```
+Your original query targets NULL geometries in the countries table; empty results indicate no missing spatial data.
+
+For invalid (non-null but malformed) geometries, extend with:
+```sql
+SELECT 
+	country_id, 
+	country, 
+	ST_IsValid(geom) AS is_valid,
+	ST_IsValidReason(geom) AS invalid_reason
+FROM project.countries
+WHERE geom IS NOT NULL AND NOT ST_IsValid(geom);
 ```
