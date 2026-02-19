@@ -91,4 +91,3 @@ SELECT
 FROM project.countries
 WHERE geom IS NULL;
 ```
-Your original query targets NULL geometries in the countries table; empty results indicate no missing spatial data.
