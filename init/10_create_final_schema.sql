@@ -1,0 +1,5 @@
+CREATE DATABASE final_sql_project;
+
+CREATE SCHEMA project;
+
+CREATE EXTENSION IF NOT EXISTS postgis;
