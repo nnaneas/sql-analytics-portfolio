@@ -92,14 +92,3 @@ FROM project.countries
 WHERE geom IS NULL;
 ```
 Your original query targets NULL geometries in the countries table; empty results indicate no missing spatial data.
-
-For invalid (non-null but malformed) geometries, extend with:
-```sql
-SELECT 
-	country_id, 
-	country, 
-	ST_IsValid(geom) AS is_valid,
-	ST_IsValidReason(geom) AS invalid_reason
-FROM project.countries
-WHERE geom IS NOT NULL AND NOT ST_IsValid(geom);
-```
