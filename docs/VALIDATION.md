@@ -1,7 +1,3 @@
-I've added the row counts query to the existing Markdown file. 
-
-## Updated File Content
-
 ```markdown
 # Database Referential Integrity Checks
 
